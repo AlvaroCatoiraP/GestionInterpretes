@@ -1,6 +1,6 @@
 package DAO;
 
-import Metier.Indisponibilite;
+import Model.Indisponibilite;
 
 import java.sql.Connection;
 import java.sql.SQLException;

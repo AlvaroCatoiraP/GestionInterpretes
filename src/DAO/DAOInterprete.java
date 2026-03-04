@@ -1,6 +1,6 @@
 package DAO;
 
-import Metier.Interprete;
+import Model.Interprete;
 
 import java.sql.*;
 import java.util.ArrayList;

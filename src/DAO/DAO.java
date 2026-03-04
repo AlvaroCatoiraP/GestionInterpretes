@@ -1,9 +1,13 @@
 package DAO;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Classe abstraite générique implémentant le pattern DAO.
@@ -22,11 +26,16 @@ public abstract class DAO<T, ID> {
      */
     public DAO() throws SQLException {
         try {
+
+
+            Properties props = new Properties();
+            props.load(new FileInputStream("config.properties"));
+
             Class.forName("oracle.jdbc.driver.OracleDriver");
 
-            String url = "";
-            String user = "";
-            String password = "";
+            String url = props.getProperty("url");
+            String user = props.getProperty("user");
+            String password = props.getProperty("password");
 
             this.connection = DriverManager.getConnection(url, user, password);
 
@@ -34,6 +43,10 @@ public abstract class DAO<T, ID> {
             throw new SQLException(" Driver Oracle introuvable !", e);
         } catch (SQLException e) {
             throw new SQLException(" Échec de la connexion à la base de données !", e);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
