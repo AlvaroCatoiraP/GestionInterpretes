@@ -101,7 +101,9 @@ public class DAOCompetences extends DAO<Competence, Integer>{
         return  competences;
     }
 
-    public List<Competence> findAllbyInterprete(String login) {
-        return List.of();
+    public List<Competence> findAllbyInterprete(String login) throws Exception {
+       DAOInterpreteCompetence daoInterpreteCompetence = new DAOInterpreteCompetence(connection);
+       List<Competence> competences = daoInterpreteCompetence.findCompetencesByInterprete(login);
+       return competences;
     }
 }

@@ -60,7 +60,7 @@ public class DAOInterprete extends DAO<Interprete , String> {
             }
 
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.err.println(" Erreur read Interprete: " + ex.getMessage());
         }
         return null;
@@ -106,7 +106,7 @@ public class DAOInterprete extends DAO<Interprete , String> {
                 ));
             }
             fillInterpreteList(interpretes);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.err.println(" Erreur findAll interpretes: " + ex.getMessage());
         }
         return interpretes;
@@ -117,7 +117,7 @@ public class DAOInterprete extends DAO<Interprete , String> {
      *
      * @param interpretes liste d'interprete sans ses disponibilité
      */
-    public void fillInterpreteList(List<Interprete> interpretes){
+    public void fillInterpreteList(List<Interprete> interpretes) throws Exception {
 
         for(Interprete interprete : interpretes){
 
