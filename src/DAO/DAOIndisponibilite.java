@@ -24,7 +24,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
         PreparedStatement ps = connection.prepareStatement(sql);
 
-        ps.setString(1, indisponibilite.getId_interprete());
+        ps.setString(1, indisponibilite.getinterprete().getLogin());
         ps.setDate(2, Date.valueOf(indisponibilite.getDate()));
         ps.setTime(3, Time.valueOf(indisponibilite.getHeure_debut()));
         ps.setTime(4, Time.valueOf(indisponibilite.getHeure_fin()));
@@ -53,7 +53,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
                 return new Indisponibilite(
                         rs.getInt("id"),
-                        rs.getString("id_interprete"),
+                        interprete,
                         rs.getDate("date_indisponibilite").toLocalDate(),
                         rs.getTime("heure_debut").toLocalTime(),
                         rs.getTime("heure_fin").toLocalTime()
@@ -76,7 +76,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
             PreparedStatement ps = connection.prepareStatement(sql);
 
-            ps.setString(1, indisponibilite.getId_interprete());
+            ps.setString(1, indisponibilite.getinterprete().getLogin());
             ps.setDate(2, Date.valueOf(indisponibilite.getDate()));
             ps.setTime(3, Time.valueOf(indisponibilite.getHeure_debut()));
             ps.setTime(4, Time.valueOf(indisponibilite.getHeure_fin()));
@@ -126,7 +126,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
                 liste.add(new Indisponibilite(
                         rs.getInt("id"),
-                        rs.getString("id_interprete"),
+                        interprete,
                         rs.getDate("date_indisponibilite").toLocalDate(),
                         rs.getTime("heure_debut").toLocalTime(),
                         rs.getTime("heure_fin").toLocalTime()
@@ -160,7 +160,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
                 liste.add(new Indisponibilite(
                         rs.getInt("id"),
-                        rs.getString("id_interprete"),
+                        interprete,
                         rs.getDate("date_indisponibilite").toLocalDate(),
                         rs.getTime("heure_debut").toLocalTime(),
                         rs.getTime("heure_fin").toLocalTime()

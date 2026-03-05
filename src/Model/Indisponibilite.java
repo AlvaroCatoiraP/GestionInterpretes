@@ -6,14 +6,14 @@ import java.time.LocalTime;
 public class Indisponibilite {
 
     private int id;
-    private String id_interprete;
+    private Interprete interprete;
     private LocalDate date;
     private LocalTime heure_debut;
     private LocalTime heure_fin;
 
-    public Indisponibilite(int id, String id_interprete, LocalDate date, LocalTime heure_debut, LocalTime heure_fin) {
+    public Indisponibilite(int id, Interprete interprete, LocalDate date, LocalTime heure_debut, LocalTime heure_fin) {
         this.id = id;
-        this.id_interprete = id_interprete;
+        this.interprete = interprete;
         this.date = date;
         this.heure_debut = heure_debut;
         this.heure_fin = heure_fin;
@@ -27,12 +27,12 @@ public class Indisponibilite {
         this.id = id;
     }
 
-    public String getId_interprete() {
-        return id_interprete;
+    public Interprete getinterprete() {
+        return interprete;
     }
 
-    public void setId_interprete(String id_interprete) {
-        this.id_interprete = id_interprete;
+    public void setinterprete(Interprete interprete) {
+        this.interprete = interprete;
     }
 
     public LocalDate getDate() {

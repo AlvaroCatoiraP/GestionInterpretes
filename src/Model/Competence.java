@@ -6,9 +6,10 @@ public class Competence {
     private String description;
 
     public Competence(int id,String nom, String description) {
+        this.id = id;
         this.nom = nom;
         this.description = description;
-        this.id = id;
+
     }
 
     public String getNom() {
