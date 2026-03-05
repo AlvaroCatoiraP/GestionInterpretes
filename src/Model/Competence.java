@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class Competence {
     private int id;
     private String nom;
@@ -14,6 +16,13 @@ public class Competence {
 
     public String getNom() {
         return nom;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Competence that = (Competence) o;
+        return id == that.id && Objects.equals(nom, that.nom) && Objects.equals(description, that.description);
     }
 
     public void setNom(String nom) {

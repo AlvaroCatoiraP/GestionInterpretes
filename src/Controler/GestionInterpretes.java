@@ -3,6 +3,7 @@ package Controler;
 import Exceptions.ConnexionException;
 import Model.Interprete;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -34,7 +35,7 @@ public interface GestionInterpretes {
      * @throws ConnexionException si probleme quelconque de connexion
      */
     List<Interprete> obtenirListeInterpretesDisponibles(LocalDate date_plage , LocalTime heure_debut_plage, LocalTime heure_fin_plage)
-            throws ConnexionException;
+            throws ConnexionException, SQLException;
 
     /**
      * recuperer la liste des interpretes ayant la compétence exigee, disponibles pendant une plage horaire donnee
@@ -47,8 +48,6 @@ public interface GestionInterpretes {
      * @throws NoSuchElementException si competence n'existe pas
      */
     List<Interprete> obtenirListeInterpretesDisponibles(LocalDate date_plage , LocalTime heure_debut_plage, LocalTime heure_fin_plage, String competence)
-            throws ConnexionException;
-
-
+            throws ConnexionException, SQLException;
 
 }

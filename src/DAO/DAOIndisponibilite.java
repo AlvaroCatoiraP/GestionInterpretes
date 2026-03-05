@@ -4,6 +4,8 @@ import Model.Indisponibilite;
 import Model.Interprete;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,5 +174,89 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
         }
 
         return liste;
+    }
+
+    public List<Indisponibilite> findAllbyInterpreteAndDate(String login, LocalDate date) {
+
+        List<Indisponibilite> liste = new ArrayList<>();
+
+        String sql = "SELECT * FROM indisponibilite WHERE id_interprete=? AND date_indisponibilite=?";
+
+        try {
+
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, login);
+            ps.setDate(2,Date.valueOf(date));
+
+            ResultSet rs = ps.executeQuery();
+
+            DAOInterprete daoInterprete = new DAOInterprete(connection);
+            Interprete interprete = daoInterprete.read(login);
+
+            while (rs.next()) {
+
+                liste.add(new Indisponibilite(
+                        rs.getInt("id"),
+                        interprete,
+                        rs.getDate("date_indisponibilite").toLocalDate(),
+                        rs.getTime("heure_debut").toLocalTime(),
+                        rs.getTime("heure_fin").toLocalTime()
+                ));
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur findAllByInterprete : " + e.getMessage());
+        }
+
+        return liste;
+    }
+
+    /**
+     * recupere la liste des interpretes disponibles pendant une plage horaire
+     * @param date_plage date de la plage horaire
+     * @param heure_debut_plage heure de debut de la plage horaire
+     * @param heure_fin_plage heure de fin de la plage horaire
+     * @return la liste des interpretes disponibles
+     * @throws SQLException si une erreur
+     */
+    public List<Interprete> findAllInterpretDisponibles(LocalDate date_plage,
+                                                        LocalTime heure_debut_plage,
+                                                        LocalTime heure_fin_plage) throws SQLException {
+
+        String query =
+                "SELECT DISTINCT i.* " +
+                        "FROM interprete i " +
+                        "WHERE NOT EXISTS ( " +
+                        "    SELECT 1 " +
+                        "    FROM indisponibilite ind " +
+                        "    WHERE ind.id_interprete = i.login " +
+                        "      AND ind.date_indisponibilite = ? " +
+                        "      AND ind.heure_debut < ? " +
+                        "      AND ind.heure_fin > ? " +
+                        ")";
+
+        List<Interprete> interpretes = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setDate(1, Date.valueOf(date_plage));
+            ps.setTime(2, Time.valueOf(heure_fin_plage));
+            ps.setTime(3, Time.valueOf(heure_debut_plage));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Interprete i = new Interprete();
+                    i.setLogin(rs.getString("login"));
+                    i.setNom(rs.getString("nom"));
+                    i.setPrenom(rs.getString("prenom"));
+                    interpretes.add(i);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erreur findAllInterpretDisponibles : " + e.getMessage());
+        }
+
+        return interpretes;
     }
 }

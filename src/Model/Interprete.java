@@ -30,6 +30,10 @@ public class Interprete {
         this.prenom = prenom;
     }
 
+    public Interprete() {
+
+    }
+
 
     public String getLogin() {
         return login;
