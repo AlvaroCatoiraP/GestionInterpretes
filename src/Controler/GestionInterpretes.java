@@ -1,7 +1,7 @@
 package Controler;
 
-import Exceptions.ConnexionException;
-import Model.Interprete;
+import Model.Exceptions.ConnexionException;
+import Model.Bussines.Interprete;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

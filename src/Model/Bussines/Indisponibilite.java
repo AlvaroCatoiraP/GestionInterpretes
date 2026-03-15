@@ -1,4 +1,4 @@
-package Model;
+package Model.Bussines;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

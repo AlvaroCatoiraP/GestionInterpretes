@@ -1,16 +1,15 @@
 package Controler;
 
-import DAO.DAOInterprete;
-import Exceptions.ConnexionException;
-import Model.Indisponibilite;
-import Model.Interprete;
-import DAO.DAOIndisponibilite;
+import Model.DAO.DAOInterprete;
+import Model.Exceptions.ConnexionException;
+import Model.Bussines.Indisponibilite;
+import Model.Bussines.Interprete;
+import Model.DAO.DAOIndisponibilite;
 
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 

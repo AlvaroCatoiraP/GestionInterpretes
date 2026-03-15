@@ -1,7 +1,7 @@
-package DAO;
+package Model.DAO;
 
-import Model.Indisponibilite;
-import Model.Interprete;
+import Model.Bussines.Indisponibilite;
+import Model.Bussines.Interprete;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -143,32 +143,26 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
     }
 
     public List<Indisponibilite> findAllbyInterprete(String login) {
-
         List<Indisponibilite> liste = new ArrayList<>();
-
         String sql = "SELECT * FROM indisponibilite WHERE id_interprete=?";
 
-        try {
-
-            PreparedStatement ps = connection.prepareStatement(sql);
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, login);
 
-            ResultSet rs = ps.executeQuery();
+            try (ResultSet rs = ps.executeQuery()) {
+                Interprete interprete = new Interprete();
+                interprete.setLogin(login);
 
-            DAOInterprete daoInterprete = new DAOInterprete(connection);
-            Interprete interprete = daoInterprete.read(login);
-
-            while (rs.next()) {
-
-                liste.add(new Indisponibilite(
-                        rs.getInt("id"),
-                        interprete,
-                        rs.getDate("date_indisponibilite").toLocalDate(),
-                        rs.getTime("heure_debut").toLocalTime(),
-                        rs.getTime("heure_fin").toLocalTime()
-                ));
+                while (rs.next()) {
+                    liste.add(new Indisponibilite(
+                            rs.getInt("id"),
+                            interprete,
+                            rs.getDate("date_indisponibilite").toLocalDate(),
+                            rs.getTime("heure_debut").toLocalTime(),
+                            rs.getTime("heure_fin").toLocalTime()
+                    ));
+                }
             }
-
         } catch (Exception e) {
             System.err.println("Erreur findAllByInterprete : " + e.getMessage());
         }

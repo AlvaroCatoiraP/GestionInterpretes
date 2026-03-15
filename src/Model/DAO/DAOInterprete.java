@@ -1,6 +1,6 @@
-package DAO;
+package Model.DAO;
 
-import Model.Interprete;
+import Model.Bussines.Interprete;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -32,8 +32,6 @@ public class DAOInterprete extends DAO<Interprete , String> {
             }
         } catch (SQLException e) {
             System.err.println("Erreur de connexion");
-        } finally {
-            if (connection != null) connection.close();
         }
         return estInseree;
     }
@@ -85,16 +83,17 @@ public class DAOInterprete extends DAO<Interprete , String> {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, login);
             stmt.executeUpdate();
+            System.out.println(login + " supprimer");
             // mettre en place le delete en cascade pour les competences et les indisponibilité coté BD
         } catch (SQLException ex) {
-            System.err.println(" Erreur update Interprete: " + ex.getMessage());
+            System.err.println(" Erreur delete Interprete: " + ex.getMessage());
         }
     }
 
     @Override
     public List<Interprete> findAll() {
         List<Interprete> interpretes = new ArrayList<>();
-        String sql = "SELECT login, nom, prenom FROM Interprete ORDER BY nom";
+        String sql = "SELECT LOGIN, NOM, PRENOM FROM Interprete ORDER BY NOM";
         try (Statement st = connection.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
 

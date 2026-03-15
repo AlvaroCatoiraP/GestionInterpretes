@@ -1,4 +1,4 @@
-package DAO;
+package Model.DAO;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Classe abstraite générique implémentant le pattern DAO.
+ * Classe abstraite générique implémentant le pattern Model.DAO.
  * Fournit une base commune pour tous les objets d'accès aux données
  * avec une connexion automatique à la base de données Oracle.
  *

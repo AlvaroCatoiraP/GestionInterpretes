@@ -1,6 +1,6 @@
-package DAO;
+package Model.DAO;
 
-import Model.Competence;
+import Model.Bussines.Competence;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,8 +26,7 @@ public class DAOCompetences extends DAO<Competence, Integer>{
             }
         } catch (SQLException e) {
             System.err.println("Erreur de connexion");
-        } finally {
-            if (connection != null) connection.close();
+            // ici une exception apparait mas je ne sais pas encore pourquoi
         }
         return estInseree;
 
