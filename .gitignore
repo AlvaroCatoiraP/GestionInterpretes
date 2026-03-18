@@ -1,0 +1,17 @@
+# IntelliJ
+.idea/
+*.iml
+
+# build
+target/
+out/
+
+# logs
+*.log
+
+# config locale
+config.properties
+
+# OS
+.DS_Store
+Thumbs.db
