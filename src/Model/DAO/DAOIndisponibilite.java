@@ -22,7 +22,8 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
     @Override
     public boolean create(Indisponibilite indisponibilite) throws SQLException {
 
-        String sql = "INSERT INTO indisponibilite (id_interprete, date_indisponibilite, heure_debut, heure_fin) VALUES (?, ?, ?, ?)";
+        //contrainte d'unicité à gerer en BD
+        String sql = "INSERT INTO indisponibilite (login_INTERPRETE, date_indisponibilite, heure_debut, heure_fin) VALUES (?, ?, ?, ?)";
 
         PreparedStatement ps = null;
         try {
@@ -55,7 +56,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
             if (rs.next()) {
 
-                String idInterprete = rs.getString("id_interprete");
+                String idInterprete = rs.getString("login_INTERPRETE");
 
                 DAOInterprete daoInterprete = new DAOInterprete(connection);
                 Interprete interprete = daoInterprete.read(idInterprete);
@@ -70,7 +71,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
             }
         }finally {
             if(ps != null) ps.close();
-            rs.close();
+            if(rs != null)rs.close();
         }
         return null;
     }
@@ -78,7 +79,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
     @Override
     public void update(Indisponibilite indisponibilite) throws SQLException {
 
-        String sql = "UPDATE indisponibilite SET id_interprete=?, date_indisponibilite=?, heure_debut=?, heure_fin=? WHERE id=?";
+        String sql = "UPDATE indisponibilite SET login_INTERPRETE=?, date_indisponibilite=?, heure_debut=?, heure_fin=? WHERE id=?";
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement(sql);
@@ -125,7 +126,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
             while (rs.next()) {
 
-                String idInterprete = rs.getString("id_interprete");
+                String idInterprete = rs.getString("login_INTERPRETE");
 
                 Interprete interprete = daoInterprete.read(idInterprete);
 
@@ -141,13 +142,13 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
             return liste;
         }finally {
             if(ps != null) ps.close();
-            rs.close();
+            if(rs != null)rs.close();
         }
     }
 
     public List<Indisponibilite> findAllbyInterprete(String login) throws SQLException {
         List<Indisponibilite> liste = new ArrayList<>();
-        String sql = "SELECT * FROM indisponibilite WHERE id_interprete=?";
+        String sql = "SELECT * FROM indisponibilite WHERE login_INTERPRETE=?";
         PreparedStatement ps =  null;
         ResultSet rs = null;
         try{
@@ -170,7 +171,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
             return liste;
         }finally {
             if(ps != null) ps.close();
-            rs.close();
+            if(rs != null)rs.close();
         }
     }
 
@@ -178,7 +179,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
 
         List<Indisponibilite> liste = new ArrayList<>();
 
-        String sql = "SELECT * FROM indisponibilite WHERE id_interprete=? AND date_indisponibilite=?";
+        String sql = "SELECT * FROM indisponibilite WHERE login_interprete=? AND date_indisponibilite=?";
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -204,7 +205,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
             }
         }finally {
             if(ps != null) ps.close();
-            rs.close();
+            if(rs != null)rs.close();
         }
         return liste;
     }
@@ -227,7 +228,7 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
                         "WHERE NOT EXISTS ( " +
                         "    SELECT 1 " +
                         "    FROM indisponibilite ind " +
-                        "    WHERE ind.id_interprete = i.login " +
+                        "    WHERE ind.login_INTERPRETE = i.login " +
                         "      AND ind.date_indisponibilite = ? " +
                         "      AND ind.heure_debut < ? " +
                         "      AND ind.heure_fin > ? " +
@@ -253,8 +254,26 @@ public class DAOIndisponibilite extends DAO<Indisponibilite, Integer> {
             }
         }finally {
             if(ps != null) ps.close();
-            rs.close();
+            if(rs != null)rs.close();
         }
         return interpretes;
+    }
+
+    public boolean addIndisponibiliteToInterprete(Indisponibilite indisponibilite, Interprete interprete) throws SQLException {
+        String query = "INSERT INTO interprete_indisponibilite (login_INTERPRETE, id_indisponibilite) VALUES (?, ?)";
+        PreparedStatement ps = null;
+        boolean result = false;
+        try{
+            ps = connection.prepareStatement(query);
+            ps.setString(1, interprete.getLogin());
+            ps.setInt(2, indisponibilite.getId());
+            int nbInserts = ps.executeUpdate();
+            if(nbInserts > 0) {
+                result = true;
+            }
+        }finally {
+            if(ps != null) ps.close();
+        }
+        return result;
     }
 }

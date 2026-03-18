@@ -41,10 +41,11 @@ public class DAOInterprete extends DAO<Interprete , String> {
     public Interprete read(String login) throws SQLException {
         String sql = "SELECT login, nom, prenom FROM Interprete WHERE login = ?";
         PreparedStatement stmt = null;
+        ResultSet rs = null;
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             if (rs.next()) {
                 Interprete interprete = new Interprete(
                         rs.getString("login"),
@@ -61,6 +62,7 @@ public class DAOInterprete extends DAO<Interprete , String> {
 
         } finally {
             if(stmt != null) stmt.close();
+            if(rs != null)rs.close();
         }
         return null;
     }
@@ -114,7 +116,7 @@ public class DAOInterprete extends DAO<Interprete , String> {
             fillInterpreteList(interpretes);
         }finally {
             if(stmt != null) stmt.close();
-            if(rs != null) rs.close();
+            if(rs != null)rs.close();
         }
         return interpretes;
 

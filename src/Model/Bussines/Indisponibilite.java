@@ -11,7 +11,14 @@ public class Indisponibilite {
     private LocalTime heure_debut;
     private LocalTime heure_fin;
 
-    public Indisponibilite(int id, Interprete interprete, LocalDate date, LocalTime heure_debut, LocalTime heure_fin) {
+    public Indisponibilite(Interprete interprete, LocalDate date, LocalTime heure_debut, LocalTime heure_fin) {
+        this.interprete = interprete;
+        this.date = date;
+        this.heure_debut = heure_debut;
+        this.heure_fin = heure_fin;
+    }
+
+    public Indisponibilite(int id,Interprete interprete, LocalDate date, LocalTime heure_debut, LocalTime heure_fin) {
         this.id = id;
         this.interprete = interprete;
         this.date = date;

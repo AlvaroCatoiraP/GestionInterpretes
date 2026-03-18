@@ -7,6 +7,12 @@ public class Competence {
     private String nom;
     private String description;
 
+    public Competence(String nom, String description) {
+        this.nom = nom;
+        this.description = description;
+    }
+
+
     public Competence(int id,String nom, String description) {
         this.id = id;
         this.nom = nom;

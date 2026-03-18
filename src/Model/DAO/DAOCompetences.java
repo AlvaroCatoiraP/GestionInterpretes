@@ -1,6 +1,7 @@
 package Model.DAO;
 
 import Model.Bussines.Competence;
+import Model.Bussines.Interprete;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class DAOCompetences extends DAO<Competence, Integer>{
                 }
             }finally {
                 if(ps != null) ps.close();
-                if(rs != null) rs.close();
+                if(rs != null)rs.close();
             }
         return null;
     }
@@ -106,14 +107,59 @@ public class DAOCompetences extends DAO<Competence, Integer>{
             }
         } finally {
             if(ps != null) ps.close();
-            rs.close();
+            if(rs != null)rs.close();
         }
         return  competences;
     }
 
     public List<Competence> findAllbyInterprete(String login) throws SQLException {
-       DAOInterpreteCompetence daoInterpreteCompetence = new DAOInterpreteCompetence(connection);
-       List<Competence> competences = daoInterpreteCompetence.findCompetencesByInterprete(login);
+       List<Competence> competences = findCompetencesByInterprete(login);
        return competences;
+    }
+
+    public List<Competence> findCompetencesByInterprete(String login) throws SQLException {
+        String sql = """
+            SELECT c.id, c.nom, c.description
+            FROM Interprete_Competence ic
+            JOIN Competence c ON c.id = ic.id_competence
+            WHERE ic.LOGIN_INTERPRETE = ?
+            """;
+
+        List<Competence> competences = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, login);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    competences.add(new Competence(
+                            rs.getInt("id"),
+                            rs.getString("nom"),
+                            rs.getString("description")
+                    ));
+                }
+            }
+        }
+
+        return competences;
+    }
+
+    public boolean addCompenteceToInterprete(Competence competence, Interprete interprete) throws SQLException {
+        String query = "INSERT INTO Interprete_Competence (LOGIN_INTERPRETE,id_competence) VALUES (?,?)";
+        PreparedStatement ps = null;
+        boolean result = false;
+        try{
+            ps = connection.prepareStatement(query);
+            ps.setString(1, interprete.getLogin());
+            ps.setInt(2, competence.getId());
+
+            int nbInserts = ps.executeUpdate();
+            if(nbInserts > 0) {
+                result = true;
+            }
+        }finally{
+            if(ps != null) ps.close();
+        }
+        return result;
     }
 }

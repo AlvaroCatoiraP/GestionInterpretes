@@ -74,4 +74,13 @@ public class Interprete {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("login:").append(login).append("\n");
+        sb.append("nom:").append(nom).append("\n");
+        sb.append("prenom:").append(prenom).append("\n");
+        return sb.toString();
+    }
 }
