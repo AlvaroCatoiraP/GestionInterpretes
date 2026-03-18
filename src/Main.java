@@ -25,6 +25,8 @@ public class Main {
 
             Interprete i = new Interprete("i14521", "Catoira", "Alvaro");
             daoInterprete.create(i);
+            Interprete i2 = new Interprete("i14522", "Pereyra", "Carlos");
+            daoInterprete.create(i2);
 
             List<Interprete> interpretes = daoInterprete.findAll();
             System.out.println("Tous les interpretes :");
@@ -73,6 +75,21 @@ public class Main {
             estDispo = controleur.verifierDisponibilite(interpreteBd.getLogin(),date,LocalTime.of(10, 00),LocalTime.of(12, 00));
             if(estDispo) System.out.println(interpreteBd.getPrenom() + " est disponible");
 
+            List<Interprete> interpretesBd = controleur.obtenirListeInterpretesDisponibles(date,LocalTime.of(10, 00),LocalTime.of(12, 00));
+
+            System.out.println("---------- Interpretes disponibles ----------");
+            System.out.println("Le :" + date + " " +  LocalTime.of(10, 00) + " " + LocalTime.of(12, 00));
+            for (Interprete interprete : interpretesBd) {
+                System.out.println(interprete);
+            }
+
+            List<Interprete> interpretesBdComp = controleur.obtenirListeInterpretesDisponibles(date,LocalTime.of(10, 00),LocalTime.of(12, 00),c1.getNom());
+
+            System.out.println("---------- Interpretes disponibles ----------");
+            System.out.println("Le :" + date + " " +  LocalTime.of(10, 00) + " " + LocalTime.of(12, 00));
+            for (Interprete interprete : interpretesBd) {
+                System.out.println(interprete);
+            }
 
         }catch (SQLException ex) {
             System.out.println(ex.getMessage());
